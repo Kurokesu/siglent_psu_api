@@ -2,8 +2,10 @@ Brief
 =====
 This code was created to make programmable power supply usable in automation tasks. Siglent provides native software, but it has lot of dependencies and is cumbersome to use. Also python code allows to control instrument from single board computers like Raspberry Pi!
 
+[Manufacturer link](https://www.siglent.eu/spd3303x-e-power-supply.html)
 
 ![Instrument](SPD3000X-side1.jpg)
+
 
 siglent_psu_api.py
 ==================
