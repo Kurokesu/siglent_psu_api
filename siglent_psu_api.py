@@ -44,7 +44,7 @@ class SIGLENT_PSU():
 
     def identify(self):
         self.s.sendall(b'*IDN?')
-        self.s.sendall(b'\n')
+        #self.s.sendall(b'\n')
         reply = self.s.recv(4096).decode('utf-8').strip()
         reply = reply.split(",")
         reply_d = {}
@@ -61,7 +61,7 @@ class SIGLENT_PSU():
         cmd = "MEASURE:" + parameter.name + "? " + ch.name
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
-        self.s.sendall(b'\n')
+        #self.s.sendall(b'\n')
         time.sleep(self._sleep)
         reply = self.s.recv(4096).decode('utf-8').strip()
         reply = float(reply)
@@ -77,14 +77,14 @@ class SIGLENT_PSU():
         cmd = ch.name + ":" + parameter.name + " " + str(value)
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
-        self.s.sendall(b'\n')
+        #self.s.sendall(b'\n')
         time.sleep(self._sleep)
 
     def output(self, ch, status):
         cmd = "OUTPUT " + ch.name + "," + status.name
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
-        self.s.sendall(b'\n')
+        #self.s.sendall(b'\n')
         time.sleep(self._sleep)
 
     def track(self, tr):
@@ -93,14 +93,14 @@ class SIGLENT_PSU():
         cmd = "OUTPUT:TRACK " +  str(tr.value)
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
-        self.s.sendall(b'\n')
+        #self.s.sendall(b'\n')
         time.sleep(self._sleep)
 
     def system(self):
         cmd = "SYSTem:STATus?"
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
-        self.s.sendall(b'\n')
+        #self.s.sendall(b'\n')
         time.sleep(self._sleep)
         reply = self.s.recv(4096).decode('utf-8').strip()
         reply = int(reply, 16)
