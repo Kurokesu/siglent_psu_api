@@ -1,5 +1,5 @@
-__author__ = "Saulius Lukse"
-__copyright__ = "Copyright 2015-2018, www.kurokesu.com"
+__author__ = "Saulius Lukse and Benjamin Justiz"
+__copyright__ = "Copyright 2015-2018, www.kurokesu.com and Benjamin Justiz (justiz26.de)"
 __version__ = "0.1"
 __license__ = "GNU GPLv3"
 
@@ -88,9 +88,8 @@ class SIGLENT_PSU():
         time.sleep(self._sleep)
 
     def track(self, tr):
-        raise Exception("Does not operate instrument, though documentation says it should.")
-
-        cmd = "OUTPUT:TRACK " +  str(tr.value)
+        # raise Exception("Does not operate instrument, though documentation says it should.")
+        cmd = "OUTPUT:TRACK " +  str(tr.value) + "\n"
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
         #self.s.sendall(b'\n')
