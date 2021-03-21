@@ -15,6 +15,10 @@ print(i)
 sys = s.system()
 print(sys)
 
+
+# Set output mode
+#s.track(siglent.TRACK.INDEPENDENT)
+
 # switch on CH1
 s.output(siglent.CHANNEL.CH1, siglent.STATE.ON)
 

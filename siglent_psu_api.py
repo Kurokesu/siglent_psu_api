@@ -88,8 +88,6 @@ class SIGLENT_PSU():
         time.sleep(self._sleep)
 
     def track(self, tr):
-        raise Exception("Does not operate instrument, though documentation says it should.")
-
         cmd = "OUTPUT:TRACK " +  str(tr.value)
         cmd_b = cmd.encode("utf-8")
         self.s.sendall(cmd_b)
