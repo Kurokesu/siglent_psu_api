@@ -35,6 +35,9 @@ print(i)
 sys = s.system()
 print(sys)
 
+# Set output mode
+#s.track(siglent.TRACK.INDEPENDENT)
+
 # switch on CH1
 s.output(siglent.CHANNEL.CH1, siglent.STATE.ON)
 
@@ -44,7 +47,6 @@ s.set(siglent.CHANNEL.CH1, siglent.PARAMETER.VOLTAGE, 2.0)
 # read voltage
 r = s.measure(ch = siglent.CHANNEL.CH1, parameter = siglent.PARAMETER.VOLTAGE)
 print(r)
-
 ```
 
 Results
