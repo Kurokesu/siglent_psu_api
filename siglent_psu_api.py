@@ -105,14 +105,14 @@ class SIGLENT_PSU():
 
         response = {}
         if reply & 0x01:
-            response["ch1_mode"] = MODE.CV
-        else:
             response["ch1_mode"] = MODE.CC
+        else:
+            response["ch1_mode"] = MODE.CV
         
         if reply & 0x02:
-            response["ch2_mode"] = MODE.CV
-        else:
             response["ch2_mode"] = MODE.CC
+        else:
+            response["ch2_mode"] = MODE.CV
 
         m0 = reply & 0x04
         m1 = reply & 0x08
