@@ -37,15 +37,14 @@ class SIGLENT_PSU():
     def __init__(self, ip, port=5025):
         self.ip = ip
         self.port = port
-        self._sleep = 1
+        self._sleep = 0.05
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.settimeout(1)
         self.s.connect((self.ip , self.port))
 
     def identify(self):
-        self.s.sendall(b'*IDN?')
-        #self.s.sendall(b'\n')
-        reply = self.s.recv(4096).decode('utf-8').strip()
+        self.send_line(b'*IDN?')
+        reply = self.receive_line().decode('utf-8').strip()
         reply = reply.split(",")
         reply_d = {}
         if len(reply) == 5:
@@ -57,13 +56,29 @@ class SIGLENT_PSU():
             return reply_d
         return None
 
+    def send_line(self,cmd_b):
+        cmd_b = b'%s\n' % (cmd_b.strip(),)
+        return self.s.sendall(cmd_b)
+
+    def receive_line(self):
+        ba = bytearray()
+        while True:
+            try:
+                b = self.s.recv(256)
+            except TimeoutError:
+                b = b''
+            if not b:
+                break
+            ba.extend(b)
+            if b'\n' in b:
+                break
+        return bytes(ba)
+
     def measure(self, ch, parameter):
         cmd = "MEASURE:" + parameter.name + "? " + ch.name
         cmd_b = cmd.encode("utf-8")
-        self.s.sendall(cmd_b)
-        #self.s.sendall(b'\n')
-        time.sleep(self._sleep)
-        reply = self.s.recv(4096).decode('utf-8').strip()
+        self.send_line(cmd_b)
+        reply = self.receive_line().decode('utf-8').strip()
         reply = float(reply)
         return reply
    
@@ -76,31 +91,27 @@ class SIGLENT_PSU():
 
         cmd = ch.name + ":" + parameter.name + " " + str(value)
         cmd_b = cmd.encode("utf-8")
-        self.s.sendall(cmd_b)
-        #self.s.sendall(b'\n')
+        self.send_line(cmd_b)
         time.sleep(self._sleep)
 
     def output(self, ch, status):
         cmd = "OUTPUT " + ch.name + "," + status.name
         cmd_b = cmd.encode("utf-8")
-        self.s.sendall(cmd_b)
-        #self.s.sendall(b'\n')
+        self.send_line(cmd_b)
         time.sleep(self._sleep)
 
     def track(self, tr):
         cmd = "OUTPUT:TRACK " +  str(tr.value)
         cmd_b = cmd.encode("utf-8")
-        self.s.sendall(cmd_b)
-        #self.s.sendall(b'\n')
+        self.send_line(cmd_b)
         time.sleep(self._sleep)
 
     def system(self):
         cmd = "SYSTem:STATus?"
         cmd_b = cmd.encode("utf-8")
-        self.s.sendall(cmd_b)
-        #self.s.sendall(b'\n')
+        self.send_line(cmd_b)
         time.sleep(self._sleep)
-        reply = self.s.recv(4096).decode('utf-8').strip()
+        reply = self.receive_line().decode('utf-8').strip()
         reply = int(reply, 16)
 
         response = {}
